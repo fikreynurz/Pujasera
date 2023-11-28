@@ -8,7 +8,6 @@ const Kasir = db.sequelize.define(
         KodeKasir: {
             type: DataTypes.STRING,
             primaryKey: true,
-            // autoIncrement: true,
             allowNull: false,
         },
         Nama: {
@@ -26,7 +25,3 @@ const Kasir = db.sequelize.define(
 );
 
 export default Kasir;
-
-// (async () => {
-//     await Kasir.sync({ force: true });
-// })();
