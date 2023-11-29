@@ -25,6 +25,10 @@ const BarangNota = db.sequelize.define(
             },
             allowNull: false,
         },
+        NamaBarang: {
+            type: DataTypes.STRING, // Sesuaikan tipe data dengan tipe data di model Barang
+            allowNull: false,
+        },
         JumlahBarang: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -42,7 +46,7 @@ const BarangNota = db.sequelize.define(
         freezeTableName: true,
     }
 );
-
+BarangNota.belongsTo(Barang, { foreignKey: 'KodeBarang' });
 export default BarangNota;
 
 // (async () => {

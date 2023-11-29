@@ -1,4 +1,6 @@
-import BarangNota  from "../models/barangNotaModel.js";
+import BarangNota from "../models/barangNotaModel.js";
+import Barang from "../models/barangModel.js";
+import Nota from "../models/notaModel.js";
 
 export const getAllBarangNota = async (req, res) => {
     try {
@@ -29,16 +31,40 @@ export const getBarangNotaById = async (req, res) => {
 };
 
 export const createBarangNota = async (req, res) => {
-    const { KodeNota, KodeBarang, JumlahBarang, HargaSatuan, Jumlah } = req.body;
+    const { KodeNota, KodeBarang, JumlahBarang } = req.body;
 
     try {
+        const nota = await Nota.findOne({
+            where: { KodeNota: KodeNota },
+        });
+
+        if (!nota) {
+            return res.status(404).json({ msg: "Nota not found" });
+        }
+
+        // Ubah cara mencari barang agar sesuai dengan perubahan di model
+        const barang = await Barang.findOne({
+            where: { KodeBarang: KodeBarang },
+        });
+
+        if (!barang || barang.HargaSatuan === null) {
+            return res.status(404).json({ msg: "Barang not found or HargaSatuan is null" });
+        }
+
+        const { HargaSatuan, Stok, NamaBarang } = barang;
+        const Jumlah = JumlahBarang * HargaSatuan;
+
         const newBarangNota = await BarangNota.create({
             KodeNota,
             KodeBarang,
+            NamaBarang,
             JumlahBarang,
             HargaSatuan,
             Jumlah,
         });
+
+        // Ubah cara mengupdate stok
+        await barang.update({ Stok: Stok - JumlahBarang });
 
         res.status(201).json(newBarangNota);
     } catch (error) {

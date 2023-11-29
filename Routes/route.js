@@ -4,6 +4,7 @@ import { createBarang, deleteBarang, getAllBarang, getBarangById, updateBarang }
 import { createKasir, deleteKasir, getAllKasir, getKasirById, updateKasir } from "../controller/kasirController.js";
 import { createNota, deleteNota, getAllNota, getNotaById, updateNota } from "../controller/notaController.js";
 import { createTenan, deleteTenan, getAllTenan, getTenanById, updateTenan } from "../controller/tenanController.js";
+import { beliBarang } from "../controller/pembelianController.js";
 
 const router = express.Router();
 
@@ -28,8 +29,11 @@ router.post("/tenan", createTenan);
 router.put("/tenan/:kodeTenan", updateTenan);
 router.delete("/tenan/:kodeTenan", deleteTenan);
 
+// Beli Barang
+router.post("/belibarang", beliBarang);
+
 // Tambah Transaksi
-router.post("/transaksi", createNota);
+router.post("/nota", createNota);
 
 // Lihat Struk
 router.get("/struk/:kodeNota", getNotaById);
